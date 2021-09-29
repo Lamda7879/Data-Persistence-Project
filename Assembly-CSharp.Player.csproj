@@ -61,7 +61,10 @@
     <Compile Include="Assets\Scripts\Ball.cs" />
     <Compile Include="Assets\Scripts\DeathZone.cs" />
     <Compile Include="Assets\Scripts\Brick.cs" />
-    <Compile Include="Assets\Test.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\MenuManager.cs" />
+    <Compile Include="Assets\Scripts\NameInput.cs" />
+    <Compile Include="Assets\Scripts\ClearSaveButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

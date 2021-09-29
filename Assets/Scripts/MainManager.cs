@@ -11,17 +11,21 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
-    public GameObject GameOverText;
+    public Text bestScoreText;
+    public GameObject gameOverPanel;
     
     private bool m_Started = false;
     private int m_Points;
     
-    private bool m_GameOver = false;
+    //private bool m_GameOver = false;
 
     
     // Start is called before the first frame update
     void Start()
     {
+        string _highScoreName = GameManager.gm.highScoreName;
+        bestScoreText.text = $"Best Score : {_highScoreName} : {GameManager.gm.highScore}";
+
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -36,6 +40,8 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+
+        
     }
 
     private void Update()
@@ -53,24 +59,39 @@ public class MainManager : MonoBehaviour
                 Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
             }
         }
-        else if (m_GameOver)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            }
-        }
     }
 
     void AddPoint(int point)
     {
-        m_Points += point;
-        ScoreText.text = $"Score : {m_Points}";
+        GameManager.gm.AddScore(point);
+        ScoreText.text = $"Score : {GameManager.gm.playerScore}";
     }
 
     public void GameOver()
     {
-        m_GameOver = true;
-        GameOverText.SetActive(true);
+        int _highScore = GameManager.gm.highScore;
+        int _playerScore = GameManager.gm.playerScore;
+
+        if(_playerScore > _highScore)
+        {
+            GameManager.gm.SaveGame();
+        }
+
+        string _highScoreName = GameManager.gm.highScoreName;
+        bestScoreText.text = $"Best Score : {_highScoreName} : {GameManager.gm.highScore}";
+
+        gameOverPanel.SetActive(true);
+    }
+
+    public void RestartButton()
+    {
+        GameManager.gm.playerScore = 0;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void MenuButton()
+    {
+        GameManager.gm.playerScore = 0;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 }
